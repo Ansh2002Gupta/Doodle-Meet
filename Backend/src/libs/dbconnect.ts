@@ -1,29 +1,17 @@
+import mongoose from "mongoose";
 
-import {MongoClient, ServerApiVersion} from 'mongodb';
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGODB_HOSTNAME}.mongodb.net/?appName=${process.env.MONGODB_APPNAME}`;
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOSTNAME}.mongodb.net/?appName=${process.env.MONGODB_APPNAME}`;
 
 async function connectToDB() {
   try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
+    await mongoose.connect(uri);
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } catch (error) {
     console.error("Error in dbconnect.ts: ", error);
     process.exit(1);
-  } finally {
-    await client.close();
   }
 }
-connectToDB().catch(console.dir);
 
 export default connectToDB;
