@@ -48,6 +48,20 @@ const schemaSkeleton = {
   ],
 };
 
+interface IUser extends mongoose.Document {
+  fullName: string;
+  email: string;
+  password: string;
+  profilePicture: string;
+  bio: string;
+  nativeLanguage: string;
+  learningLanguage: string;
+  location: string;
+  isOnboarded: boolean;
+  friends: mongoose.Schema.Types.ObjectId[];
+  comparePassword: (password: string) => Promise<boolean>;
+}
+
 const UserSchema = new mongoose.Schema(schemaSkeleton, { timestamps: true });
 
 UserSchema.pre("save", async function (next) {
@@ -63,10 +77,12 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
-UserSchema.methods.comparePassword = async function (password: string) {
-  return await bcrypt.compare(password, this.password);
+UserSchema.methods.comparePassword = async function (
+  password: string
+): Promise<boolean> {
+  return (await bcrypt.compare(password, this.password)) as boolean;
 };
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model<IUser>("User", UserSchema);
 
 export default User;

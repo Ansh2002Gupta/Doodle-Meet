@@ -3,6 +3,7 @@ import User from "../../schema/User.ts";
 import jwt from "jsonwebtoken";
 import emailValidator from "../../utils/emailValidator.ts";
 import passwordValidator from "../../utils/passwordvalidator.ts";
+import { upsertStreamUser } from "../../libs/streamChat.ts";
 
 async function signupController(req: Request, res: Response) {
   try {
@@ -50,6 +51,20 @@ async function signupController(req: Request, res: Response) {
       return res
         .status(400)
         .json({ error: true, message: "New user cannot be created" });
+
+    try {
+      await upsertStreamUser({
+        id: newUser._id,
+        name: newUser.fullName,
+        image: newUser.profilePicture,
+      });
+      console.log(
+        `User upserted in Stream Chat successfully ${newUser.fullName}`
+      );
+    } catch (error) {
+      console.error("Error in signupController.ts: ", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
 
     const token = jwt.sign(
       { userId: newUser._id },
