@@ -54,9 +54,9 @@ async function signupController(req: Request, res: Response) {
 
     try {
       await upsertStreamUser({
-        id: newUser._id,
+        id: newUser._id.toString(),
         name: newUser.fullName,
-        image: newUser.profilePicture,
+        image: newUser.profilePicture || "",
       });
       console.log(
         `User upserted in Stream Chat successfully ${newUser.fullName}`
