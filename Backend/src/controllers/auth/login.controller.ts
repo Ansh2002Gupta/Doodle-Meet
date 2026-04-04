@@ -42,13 +42,15 @@ async function loginController(req: Request, res: Response) {
     const { password: _, ...userResponse } = user.toObject();
 
     return res.status(200).json({
-      suscess: true,
+      success: true,
       message: "User logged in successfully",
       data: userResponse,
     });
   } catch (error) {
     console.error("Error in loginController.ts:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
   }
 }
 
