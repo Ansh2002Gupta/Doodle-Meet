@@ -3,6 +3,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.routes.ts";
+import userRoutes from "./routes/user.routes.ts";
+import chatRoutes from "./routes/chat.routes.ts";
 import { connectToDB } from "./libs/index.ts";
 import checkEnvironmentConfig from "./libs/checkEnvironmentConfig.ts";
 const PORT = process.env.PORT;
@@ -17,6 +19,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/chats", chatRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on the port ${PORT}`);
