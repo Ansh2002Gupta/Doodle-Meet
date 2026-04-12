@@ -7,10 +7,17 @@ import userRoutes from "./routes/user.routes.ts";
 import chatRoutes from "./routes/chat.routes.ts";
 import { connectToDB } from "./libs/index.ts";
 import checkEnvironmentConfig from "./libs/checkEnvironmentConfig.ts";
+import cors from "cors";
 const PORT = process.env.PORT;
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
 app.use(cookieParser());
 
