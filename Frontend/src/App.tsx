@@ -24,8 +24,8 @@ const App = () => {
 
   return (
     <div
-      className="h-screen flex flex-wrap gap-4 p-8"
-      data-theme="night"
+      className="h-screen flex flex-wrap"
+      data-theme="forest"
     >
       <Routes>
         <Route
